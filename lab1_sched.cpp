@@ -30,7 +30,6 @@ void RR(vector<process> p) {
     int timer = 0;
     int killedProcess = 0;
     int nextIdx = 1;
-    int to = 0;
     queue<process> q;
     queue<pair<char, int>> qt; // 이름, 러닝타임
     q.push(p[0]);
@@ -47,7 +46,6 @@ void RR(vector<process> p) {
             for(int i = nextIdx; i < p.size(); i++) {
                 if(timer >= p[i].arriveTime) {
                     q.push(p[i]);
-                    to = i;
                     nextIdx = i + 1;
                 }
             }
@@ -55,7 +53,6 @@ void RR(vector<process> p) {
             for(int i = nextIdx; i < p.size(); i++) {
                 if(timer >= p[i].arriveTime) {
                     q.push(p[i]);
-                    to = i;
                     nextIdx = i + 1;
                 }
             }
@@ -64,14 +61,12 @@ void RR(vector<process> p) {
             q.pop();
             q.push(temp);
         }
-
     }
     int size = qt.size();
     for(int i = 0; i < size; i++) {
         cout << qt.front().first << " " << qt.front().second << "\n";
         qt.pop();
     }
-
 }
 int main() {
     SetInit();
