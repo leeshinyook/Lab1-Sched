@@ -25,8 +25,7 @@ void SetInit() {
     v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
     v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
 }
-void RR(vector<process> p) {
-    int timeSlice = 1;
+void RR(vector<process> p, int timeSlice) {
     int timer = 0;
     int killedProcess = 0;
     int nextIdx = 1;
@@ -70,7 +69,7 @@ void RR(vector<process> p) {
 }
 int main() {
     SetInit();
-    RR(v);
+    RR(v, 4);
 
     return 0;
 }
