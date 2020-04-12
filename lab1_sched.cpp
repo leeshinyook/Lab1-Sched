@@ -5,6 +5,7 @@
 #include <climits>
 #include <string>
 #include <string.h>
+#include <stdio.h>
 using namespace std;
 typedef struct process {
     char processName; // 프로세스 이름, priority
