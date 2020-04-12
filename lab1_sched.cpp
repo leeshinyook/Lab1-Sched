@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 using namespace std;
+queue<pair<char, int>> qt; // 이름, 러닝타임
 struct process {
     char processName; // 프로세스 번호, priority
     int serviceTime; // 동작시간
@@ -30,7 +31,6 @@ void RR(vector<process> p, int timeSlice) {
     int killedProcess = 0;
     int nextIdx = 1;
     queue<process> q;
-    queue<pair<char, int>> qt; // 이름, 러닝타임
     q.push(p[0]);
     while(killedProcess < p.size()) {
         process temp = q.front();
