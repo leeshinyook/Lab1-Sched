@@ -16,6 +16,9 @@ struct process {
     int ticket;
     int passValue = 0; // initialize
     /*--------------*/
+    /*for MLFQ------*/
+    int timeSlice;
+    /*--------------*/
 };
 vector<process> v(5);
 void SetInit() {
@@ -24,6 +27,14 @@ void SetInit() {
     v[2].arriveTime = 4, v[2].serviceTime = 4;
     v[3].arriveTime = 6, v[3].serviceTime = 5;
     v[4].arriveTime = 8, v[4].serviceTime = 2;
+}
+void MLFQ() {
+    queue<process> q[3]; // 3층으로 구성
+
+    while(v.size()) {
+
+    }
+
 }
 int main() {
     SetInit();
