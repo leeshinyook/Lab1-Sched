@@ -61,15 +61,9 @@ void RR(vector<process> p, int timeSlice) {
             q.push(temp);
         }
     }
-    int size = qt.size();
-    for(int i = 0; i < size; i++) {
-        cout << qt.front().first << " " << qt.front().second << "\n";
-        qt.pop();
-    }
 }
 int main() {
     SetInit();
     RR(v, 4);
-
     return 0;
 }
