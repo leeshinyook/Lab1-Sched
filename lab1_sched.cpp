@@ -6,7 +6,7 @@
 #include <string>
 #include <string.h>
 using namespace std;
-queue<pair<char, int>> qt;
+queue<pair<char, int>> result;
 struct process {
     char processName; // 프로세스 번호, priority
     int serviceTime; // 동작시간
