@@ -7,19 +7,33 @@
 #include <string.h>
 using namespace std;
 
+/* perform 5 processes */
 queue<pair<char, int>> result;
+vector<process> v(5);
+/* end of 5 processes */
+
+/* for calculate and print performance */
+float avgTurnaround = 0;
+float avgWait = 0;
+vector<int> turnaround(5, 0); // 5 processes
+vector<int> wait(5, -1); // 5 processes
+/* end of calculate and print */
+
+/* define process struct */
 struct process {
     char processName; // 프로세스 번호, priority
     int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
+    int turnaroundTime; // 반환시간
     /*for stride----*/
     int stride;
     int ticket;
     int passValue = 0; // initialize
     /*--------------*/
 };
-vector<process> v(5);
+/* end of process struct */
+
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
     v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
@@ -93,13 +107,11 @@ void Print() {
         cout << '\n';
     }
 }
-void calcWait(vector<process> p, int ts)
+void calcWait(vector<process> p, int ts) 
 {
     queue<pair<char, int>> copy;
     copy = result;
     int time = 0;
-    float avgWait = 0;
-    vector<int> wait(p.size(), -1);
     while(!copy.empty())
     {
         for(int i = 0; i < p.size(); i++)
@@ -114,14 +126,12 @@ void calcWait(vector<process> p, int ts)
         copy.pop();
     }
     avgWait /= p.size();
-}
+} 
 void calcTurnaround(vector<process> p, int ts)
 {
     queue<pair<char, int>> copy;
     copy = result;
     int time = 0;
-    float avgTurnaround = 0;
-    vector<int> turnaround(p.size(), 0);
     while(!copy.empty())
     {
         time += copy.front().second;
@@ -137,6 +147,16 @@ void calcTurnaround(vector<process> p, int ts)
     }
     avgTurnaround /= p.size();
 }
+void getPerformance(vector<process> p)
+{
+    calcWait(p, 4);
+    calcTurnaround(p, 4);
+    for(int i = 0; i < p.size(); i++)
+    {
+        cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<wait[i]<<"\n";
+    }
+    cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
+} // print Performance
 int main() {
     SetInit();
     RR(v, 4);
