@@ -12,6 +12,7 @@ struct process {
     int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
+    int turnaroundTime; // 반환시간
     /*for stride----*/
     int stride;
     int ticket;
