@@ -7,18 +7,6 @@
 #include <string.h>
 using namespace std;
 
-/* perform 5 processes */
-queue<pair<char, int>> result;
-vector<process> v(5);
-/* end of 5 processes */
-
-/* for calculate and print performance */
-float avgTurnaround = 0;
-float avgWait = 0;
-vector<int> turnaround(5, 0); // 5 processes
-vector<int> wait(5, -1); // 5 processes
-/* end of calculate and print */
-
 /* define process struct */
 struct process {
     char processName; // 프로세스 번호, priority
@@ -33,6 +21,20 @@ struct process {
     /*--------------*/
 };
 /* end of process struct */
+
+/* perform 5 processes */
+queue<pair<char, int>> result;
+vector<process> v(5);
+/* end of 5 processes */
+
+/* for calculate and print performance */
+float avgTurnaround = 0;
+float avgWait = 0;
+vector<int> turnaround(5, 0); // 5 processes
+vector<int> pWait(5, -1); // 5 processes
+/* end of calculate and print */
+
+
 
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3;
@@ -81,9 +83,9 @@ void calcWait(vector<process> p, int ts)
     {
         for(int i = 0; i < p.size(); i++)
         {
-            if(wait[i] == -1 && copy.front().first == p[i].processName)
+            if(pWait[i] == -1 && copy.front().first == p[i].processName)
             {
-                p[i].waitTime = wait[i] = time - p[i].arriveTime;
+                p[i].waitTime = pWait[i] = time - p[i].arriveTime;
                 avgWait += p[i].waitTime;
             }
         }
@@ -118,7 +120,7 @@ void getPerformance(vector<process> p)
     calcTurnaround(p, 4);
     for(int i = 0; i < p.size(); i++)
     {
-        cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<wait[i]<<"\n";
+        cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
 } // print Performance
