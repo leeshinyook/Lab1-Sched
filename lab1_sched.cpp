@@ -57,6 +57,50 @@ void Print() {
         cout << '\n';
     }
 }
+void calcWait(vector<process> p, int ts)
+{
+    queue<pair<char, int>> copy;
+    copy = result;
+    int time = 0;
+    float avgWait = 0;
+    vector<int> wait(p.size(), -1);
+    while(!copy.empty())
+    {
+        for(int i = 0; i < p.size(); i++)
+        {
+            if(wait[i] == -1 && copy.front().first == p[i].processName)
+            {
+                p[i].waitTime = wait[i] = time - p[i].arriveTime;
+                avgWait += p[i].waitTime;
+            }
+        }
+        time += copy.front().second;
+        copy.pop();
+    }
+    avgWait /= p.size();
+}
+void calcTurnaround(vector<process> p, int ts)
+{
+    queue<pair<char, int>> copy;
+    copy = result;
+    int time = 0;
+    float avgTurnaround = 0;
+    vector<int> turnaround(p.size(), 0);
+    while(!copy.empty())
+    {
+        time += copy.front().second;
+        for(int i = 0; i < p.size(); i++)
+        {
+            if(copy.front().first == p[i].processName)
+            {
+                p[i].turnaroundTime = turnaround[i] = time;
+                avgTurnaround += p[i].turnaroundTime;
+            }
+        }
+        copy.pop();
+    }
+    avgTurnaround /= p.size();
+}
 int main() {
     SetInit();
     return 0;
