@@ -31,13 +31,13 @@ void SetInit() {
 void Print() {
     char task[5] = {'A', 'B', 'C', 'D', 'E'};
     int time = 0;
-    int size = qt.size();
+    int size = result.size();
     vector<pair<char, int>> arr(size);
     for(int i = 0; i < size; i++) {
-        arr[i].first = qt.front().first;
-        arr[i].second = qt.front().second;
-        time += qt.front().second;
-        qt.pop();
+        arr[i].first = result.front().first;
+        arr[i].second = result.front().second;
+        time += result.front().second;
+        result.pop();
     }
     for(int i = 0; i < 5; i++) {
         time = 0;
