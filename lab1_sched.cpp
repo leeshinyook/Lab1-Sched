@@ -45,21 +45,19 @@ void SetInit() {
 
 // scheduling table ■ □
 void Print() {
-    char task[5] = {'A', 'B', 'C', 'D', 'E'};
-    int time = 0;
+    int time;
     int size = result.size();
     vector<pair<char, int>> arr(size);
     for(int i = 0; i < size; i++) {
         arr[i].first = result.front().first;
         arr[i].second = result.front().second;
-        time += result.front().second;
         result.pop();
     }
     for(int i = 0; i < 5; i++) {
         time = 0;
-        cout << task[i] << " ";
+        cout << v[i].processName << " ";
         for(int j = 0; j < arr.size(); j++) {
-            if(task[i] == arr[j].first) {
+            if(v[i].processName == arr[j].first) {
                 for(int k = 0; k < arr[j].second; k++) {
                     cout << "■ ";
                 }
