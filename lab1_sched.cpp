@@ -103,13 +103,12 @@ void calcTurnaround(vector<process> p)
         for(int i = 0; i < p.size(); i++)
         {
             if(copy.front().first == p[i].processName)
-            {
                 p[i].turnaroundTime = turnaround[i] = time - p[i].arriveTime;
-                avgTurnaround += p[i].turnaroundTime;
-            }
         }
         copy.pop();
     }
+    for(int i = 0; i < p.size(); i++)
+        avgTurnaround += p[i].turnaroundTime;
     avgTurnaround /= p.size();
 }
 void getPerformance(vector<process> p)
