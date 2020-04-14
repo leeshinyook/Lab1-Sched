@@ -34,8 +34,6 @@ vector<int> turnaround(5, 0); // 5 processes
 vector<int> pWait(5, -1); // 5 processes
 /* end of calculate and print */
 
-
-
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
     v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
@@ -78,23 +76,22 @@ void RR(vector<process> p, int ts) {
         }
     }
 }
+
 // scheduling table ■ □
 void Print() {
-    char task[5] = {'A', 'B', 'C', 'D', 'E'};
-    int time = 0;
+    int time;
     int size = result.size();
     vector<pair<char, int>> arr(size);
     for(int i = 0; i < size; i++) {
         arr[i].first = result.front().first;
         arr[i].second = result.front().second;
-        time += result.front().second;
         result.pop();
     }
     for(int i = 0; i < 5; i++) {
         time = 0;
-        cout << task[i] << " ";
+        cout << v[i].processName << " ";
         for(int j = 0; j < arr.size(); j++) {
-            if(task[i] == arr[j].first) {
+            if(v[i].processName == arr[j].first) {
                 for(int k = 0; k < arr[j].second; k++) {
                     cout << "■ ";
                 }
@@ -109,7 +106,7 @@ void Print() {
         cout << '\n';
     }
 }
-void calcWait(vector<process> p, int ts) 
+void calcWait(vector<process> p) 
 {
     queue<pair<char, int>> copy;
     copy = result;
@@ -128,8 +125,8 @@ void calcWait(vector<process> p, int ts)
         copy.pop();
     }
     avgWait /= p.size();
-} 
-void calcTurnaround(vector<process> p, int ts)
+}
+void calcTurnaround(vector<process> p)
 {
     queue<pair<char, int>> copy;
     copy = result;
@@ -141,7 +138,7 @@ void calcTurnaround(vector<process> p, int ts)
         {
             if(copy.front().first == p[i].processName)
             {
-                p[i].turnaroundTime = turnaround[i] = time;
+                p[i].turnaroundTime = turnaround[i] = time - p[i].arriveTime;
                 avgTurnaround += p[i].turnaroundTime;
             }
         }
@@ -151,8 +148,8 @@ void calcTurnaround(vector<process> p, int ts)
 }
 void getPerformance(vector<process> p)
 {
-    calcWait(p, 4);
-    calcTurnaround(p, 4);
+    calcWait(p);
+    calcTurnaround(p);
     for(int i = 0; i < p.size(); i++)
     {
         cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
@@ -162,6 +159,7 @@ void getPerformance(vector<process> p)
 int main() {
     SetInit();
     RR(v, 4);
+    getPerformance(v);
     Print();
     return 0;
 }
