@@ -103,7 +103,7 @@ void calcTurnaround(vector<process> p)
         {
             if(copy.front().first == p[i].processName)
             {
-                p[i].turnaroundTime = turnaround[i] = time;
+                p[i].turnaroundTime = turnaround[i] = time - p[i].arriveTime;
                 avgTurnaround += p[i].turnaroundTime;
             }
         }
