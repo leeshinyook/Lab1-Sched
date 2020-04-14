@@ -19,9 +19,6 @@ struct process {
     int ticket;
     int passValue = 0; // initialize
     /*--------------*/
-    /*for MLFQ------*/
-    int timeSlice;
-    /*--------------*/
 };
 /* end of process struct */
 
@@ -40,11 +37,11 @@ vector<int> pWait(5, -1); // 5 processes
 
 
 void SetInit() {
-    v[0].arriveTime = 0, v[0].serviceTime = 3;
-    v[1].arriveTime = 2, v[1].serviceTime = 6;
-    v[2].arriveTime = 4, v[2].serviceTime = 4;
-    v[3].arriveTime = 6, v[3].serviceTime = 5;
-    v[4].arriveTime = 8, v[4].serviceTime = 2;
+    v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
+    v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
+    v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C';
+    v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
+    v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
 }
 // scheduling table ■ □
 void Print() {
@@ -127,14 +124,138 @@ void getPerformance(vector<process> p)
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
 } // print Performance
-void MLFQ() {
-    queue<process> q[3]; // 3층으로 구성
+void MLFQ(vector<process> p) {
+    queue<process> q[3]; // 3개의 큐,
+    int ts[3] = {1, 2, 4};
+    int time = 0;
+    int nextIdx = 1;
+    bool newProcess = false;
+    int killedProcess = 0;
+    int ready = 1;
+    q[0].push(p[0]);
+    while (killedProcess < p.size()) {
+        while(!q[0].empty()) {
+            newProcess = false;
+            process temp = q[0].front();
+            int restTime = temp.serviceTime - ts[0];
+            if(restTime <= 0) { // 남은 시간이 없을 때,
+                time += temp.serviceTime;
+                result.push({temp.processName, q[0].front().serviceTime});
+                q[0].pop();
+                killedProcess++;
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if(time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        newProcess = true;
+                        ready++;
+                    }
+                }
+            } else {
+                time += ts[0];
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if (time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        ready++;
+                        newProcess = true;
+                    }
+                }
+                temp.serviceTime -= ts[0];
+                result.push({temp.processName, ts[0]});
+                if(ready != 1) {
+                    q[0].pop();
+                    q[1].push(temp);
+                } else {
+                    q[0].pop();
+                    q[0].push(temp);
+                }
+            }
+            if(newProcess) {
+                break;
+            }
+        }
+        while (!q[1].empty()) {
+            if(newProcess) {
+                break;
+            }
+            newProcess = false;
+            process temp = q[1].front();
+            int restTime = temp.serviceTime - ts[1];
+            if(restTime <= 0) { // 남은 시간이 없을 때,
+                time += temp.serviceTime;
+                result.push({temp.processName, q[1].front().serviceTime});
+                q[1].pop();
 
-    while (v.size()) {
-
+                killedProcess++;
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if(time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        newProcess = true;
+                    }
+                }
+            } else {
+                time += ts[1];
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if(time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        newProcess = true;
+                    }
+                }
+                temp.serviceTime -= ts[1];
+                result.push({temp.processName, ts[1]});
+                q[1].pop();
+                q[2].push(temp);
+            }
+            if(newProcess) {
+                break;
+            }
+        }
+        while (!q[2].empty()) {
+            if(newProcess) {
+                break;
+            }
+            newProcess = false;
+            process temp = q[2].front();
+            int restTime = temp.serviceTime - ts[2];
+            if(restTime <= 0) { // 남은 시간이 없을 때,
+                time += temp.serviceTime;
+                result.push({temp.processName, q[2].front().serviceTime});
+                q[2].pop();
+                killedProcess++;
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if(time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        newProcess = true;
+                    }
+                }
+            } else {
+                time += ts[2];
+                for(int i = nextIdx; i < p.size(); i++) {
+                    if(time >= p[i].arriveTime) {
+                        q[0].push(p[i]);
+                        nextIdx = i + 1;
+                        newProcess = true;
+                    }
+                }
+                temp.serviceTime -= ts[2];
+                result.push({temp.processName, ts[2]});
+                q[2].pop();
+                q[2].push(temp);
+            }
+            if(newProcess) {
+                newProcess = false;
+                break;
+            }
+        }
     }
 }
 int main() {
     SetInit();
+    MLFQ(v);
+    Print();
     return 0;
 }
