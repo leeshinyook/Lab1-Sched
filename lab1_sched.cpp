@@ -5,6 +5,7 @@
 #include <climits>
 #include <string>
 #include <string.h>
+#include <math.h>
 using namespace std;
 
 /* define process struct */
@@ -153,6 +154,82 @@ void getPerformance(vector<process> p)
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
     Print();
 } // print Performance
+void MLFQ(vector<process> p, int exPow) {
+    queue<process> q[3]; // 3개의 큐,
+    int ts[3];
+    for(int i = 0; i < 3; i++) {
+        ts[i] = pow(exPow, i);
+    }
+    int time = 0;
+    int nextIdx = 1;
+    bool newProcess = false;
+    int killedProcess = 0;
+    int ready = 1;
+    q[0].push(p[0]);
+    while (killedProcess < p.size()) {
+        for(int j = 0; j < 3; j++)
+        {
+            while(!q[j].empty())
+            {
+                if((j == 1 || j == 2) && newProcess) // 새로운 프로세스가 들어왔으면 1 ,2 레벨 큐로 안내려감
+                    break;
+                newProcess = false;
+                process temp = q[j].front();
+                int restTime = temp.serviceTime - ts[j];
+                if(restTime <= 0) { // 남은 시간이 없을 때,
+                    time += temp.serviceTime;
+                    result.push({temp.processName, q[j].front().serviceTime});
+                    q[j].pop();
+                    killedProcess++;
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if(time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                } else {
+                    time += ts[j];
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if (time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                    temp.serviceTime -= ts[j];
+                    result.push({temp.processName, ts[j]});
+                    if(j == 0) // 0 레벨 큐
+                    { // 프로세스가 수행되고 돌이올때까지 다른 프로세스가 큐에 다른 프로세스가 없으면 다음 레벨의 큐로 이동
+                        if(ready != 1) {
+                            q[0].pop();
+                            q[1].push(temp);
+                        } else {
+                            q[0].pop();
+                            q[0].push(temp);
+                        }
+                    }
+                    else if(j == 2) // 2 레벨 큐
+                    {
+                        q[2].pop();
+                        q[2].push(temp);
+                    } else{ // 1 레벨 큐
+                        q[1].pop();
+                        q[2].push(temp);
+                    }
+                }
+                if(newProcess) {
+                    break;
+
+                }
+            }
+        }
+    }
+}
 void RR(vector<process> p, int ts) {
     int time = 0;
     int killedProcess = 0;
@@ -190,6 +267,8 @@ void RR(vector<process> p, int ts) {
     getPerformance(p);
 }
 int main() {
+    SetInit();
+    MLFQ(v, 1);
     SetInit();
     RR(v, 1);
 }
