@@ -5,6 +5,7 @@
 #include <climits>
 #include <string>
 #include <string.h>
+#include <stdio.h>
 #include <math.h>
 using namespace std;
 
@@ -154,6 +155,22 @@ void getPerformance(vector<process> p)
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
     Print();
 } // print Performance
+void FIFO(vector<process> p)
+{
+    /*
+        if need to sort ( arriveTime, priority( processName ) )
+
+        vector<pair<int, char>> arr;
+        for(int i = 0; i < p.size(); i++) {
+            arr[i].first = p[i].arriveTime;
+            arr[i].second = p[i].processName;
+        }
+        sort(&arr[0], &arr[arr.size()]);
+    */
+    for(int i = 0; i < 5; i++)
+        result.push({p[i].processName, p[i].serviceTime});
+    getPerformance(p);
+}
 void MLFQ(vector<process> p, int exPow) {
     queue<process> q[3]; // 3개의 큐,
     int ts[3];
@@ -268,7 +285,7 @@ void RR(vector<process> p, int ts) {
 }
 int main() {
     SetInit();
+    FIFO(v);
     MLFQ(v, 1);
-    SetInit();
     RR(v, 1);
 }
