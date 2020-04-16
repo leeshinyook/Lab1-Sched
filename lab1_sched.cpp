@@ -52,6 +52,7 @@ void SetInit() {
     v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C';
     v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
     v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
+    InitVariable();
 }
 
 /* Euclidean algorithm for calculate stride */
@@ -150,6 +151,7 @@ void getPerformance(vector<process> p)
         cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
+    Print();
 } // print Performance
 int main() {
     SetInit();
