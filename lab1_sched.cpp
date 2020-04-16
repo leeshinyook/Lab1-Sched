@@ -93,12 +93,12 @@ void Print() {
         for(int j = 0; j < arr.size(); j++) {
             if(v[i].processName == arr[j].first) {
                 for(int k = 0; k < arr[j].second; k++) {
-                    cout << "■ ";
+                    cout << "■";
                 }
             } else {
                 time += arr[j].second;
                 for(int k = 0; k < time; k++) {
-                    cout << "□ ";
+                    cout << "□";
                 }
                 time = 0;
             }
@@ -155,9 +155,11 @@ void getPerformance(vector<process> p)
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
     Print();
+    cout << "--------------------------------------------------------------------------" << '\n';
 } // print Performance
 
 void Stride(vector<process> p) {
+    cout << "TITLE : \tStride cpu scheduling" << '\n';
     int TC = 100; // 반복 횟수
     int commonMulti = 0; // 최소공배수가 들어갈 변수
     int minIdx = 0;
@@ -187,6 +189,7 @@ void Stride(vector<process> p) {
 }
 void FIFO(vector<process> p)
 {
+    cout << "TITLE : \tFirst-In-First-Out cpu scheduling" << '\n';
     /*
         if need to sort ( arriveTime, priority( processName ) )
 
@@ -203,6 +206,7 @@ void FIFO(vector<process> p)
     SetInit();
 }
 void MLFQ(vector<process> p, int exPow) {
+    cout << "TITLE : \tMulti Level Feedback Queue cpu scheduling" << "\tq - " << exPow << "^i" << '\n';
     queue<process> q[3]; // 3개의 큐,
     int ts[3];
     for(int i = 0; i < 3; i++) {
@@ -281,6 +285,7 @@ void MLFQ(vector<process> p, int exPow) {
     SetInit();
 }
 void RR(vector<process> p, int ts) {
+    cout << "TITLE : \tRound-Robin cpu scheduling" << "\tq - " << ts << '\n';
     int time = 0;
     int killedProcess = 0;
     int nextIdx = 1;
