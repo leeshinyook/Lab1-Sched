@@ -228,10 +228,10 @@ void MLFQ(vector<process> p, int exPow) {
             }
         }
     }
+    getPerformance(p);
 }
 int main() {
     SetInit();
     MLFQ(v, 1);
-    Print();
     return 0;
 }
