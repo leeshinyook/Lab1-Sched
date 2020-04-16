@@ -166,7 +166,7 @@ void MLFQ(vector<process> p) {
                     }
                     temp.serviceTime -= ts[j];
                     result.push({temp.processName, ts[j]});
-                    if(j == 0) // 0 레벨
+                    if(j == 0) // 0 레벨 큐
                     { // 프로세스가 수행되고 돌이올때까지 다른 프로세스가 큐에 다른 프로세스가 없으면 다음 레벨의 큐로 이동
                         if(ready != 1) {
                             q[0].pop();
@@ -176,11 +176,11 @@ void MLFQ(vector<process> p) {
                             q[0].push(temp);
                         }
                     }
-                    else if(j == 2) // 2 레벨
+                    else if(j == 2) // 2 레벨 큐
                     {
                         q[2].pop();
                         q[2].push(temp);
-                    } else{ // 1 레벨
+                    } else{ // 1 레벨 큐
                         q[1].pop();
                         q[2].push(temp);
                     }
