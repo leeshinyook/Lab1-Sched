@@ -106,7 +106,7 @@ void Print() {
         cout << '\n';
     }
 }
-void calcWait(vector<process> p) 
+void calcWait(vector<process> p)
 {
     queue<pair<char, int>> copy;
     copy = result;
@@ -200,6 +200,7 @@ void FIFO(vector<process> p)
     for(int i = 0; i < 5; i++)
         result.push({p[i].processName, p[i].serviceTime});
     getPerformance(p);
+    SetInit();
 }
 void MLFQ(vector<process> p, int exPow) {
     queue<process> q[3]; // 3개의 큐,
@@ -276,6 +277,8 @@ void MLFQ(vector<process> p, int exPow) {
             }
         }
     }
+    getPerformance(p);
+    SetInit();
 }
 void RR(vector<process> p, int ts) {
     int time = 0;
@@ -312,11 +315,14 @@ void RR(vector<process> p, int ts) {
         }
     }
     getPerformance(p);
+    SetInit();
 }
 int main() {
     SetInit();
     FIFO(v);
-    MLFQ(v, 1);
     RR(v, 1);
+    RR(v, 4);
+    MLFQ(v, 1);
+    MLFQ(v, 2);
     Stride(v);
 }
