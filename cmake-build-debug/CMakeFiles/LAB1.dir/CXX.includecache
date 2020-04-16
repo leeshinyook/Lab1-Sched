@@ -6,7 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/Users/leeshinyook/CLionProjects/LAB1/lab-sched.cpp
+/Users/leeshinyook/CLionProjects/LAB1/lab1_sched.cpp
 iostream
+-
+vector
+-
+algorithm
+-
+queue
+-
+climits
+-
+string
+-
+string.h
 -
 
