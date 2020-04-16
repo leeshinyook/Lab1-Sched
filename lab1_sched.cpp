@@ -186,10 +186,10 @@ void RR(vector<process> p, int ts) {
             q.push(temp); // 작업을 수행하고 다시 큐 안으로 들어옴
         }
     }
+    getPerformance(p);
 }
 int main() {
     SetInit();
     RR(v, 1);
-    getPerformance(v);
     return 0;
 }
