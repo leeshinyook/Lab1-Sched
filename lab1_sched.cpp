@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 using namespace std;
 
 /* define process struct */
@@ -68,12 +69,12 @@ int GCD(int a, int b) // Greatest common divisor
     }
     return a;
 }
-
 int LCM(int a, int b) // Least common multiple
 {
     return a * b / GCD(a, b);
 }
 /* end of Euclidean algorithm for calculate stride */
+
 
 // scheduling table ■ □
 void Print() {
@@ -123,7 +124,7 @@ void calcWait(vector<process> p)
         copy.pop();
     }
     avgWait /= p.size();
-} 
+}
 void calcTurnaround(vector<process> p)
 {
     queue<pair<char, int>> copy;
@@ -170,8 +171,121 @@ void FIFO(vector<process> p)
         result.push({p[i].processName, p[i].serviceTime});
     getPerformance(p);
 }
+void MLFQ(vector<process> p, int exPow) {
+    queue<process> q[3]; // 3개의 큐,
+    int ts[3];
+    for(int i = 0; i < 3; i++) {
+        ts[i] = pow(exPow, i);
+    }
+    int time = 0;
+    int nextIdx = 1;
+    bool newProcess = false;
+    int killedProcess = 0;
+    int ready = 1;
+    q[0].push(p[0]);
+    while (killedProcess < p.size()) {
+        for(int j = 0; j < 3; j++)
+        {
+            while(!q[j].empty())
+            {
+                if((j == 1 || j == 2) && newProcess) // 새로운 프로세스가 들어왔으면 1 ,2 레벨 큐로 안내려감
+                    break;
+                newProcess = false;
+                process temp = q[j].front();
+                int restTime = temp.serviceTime - ts[j];
+                if(restTime <= 0) { // 남은 시간이 없을 때,
+                    time += temp.serviceTime;
+                    result.push({temp.processName, q[j].front().serviceTime});
+                    q[j].pop();
+                    killedProcess++;
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if(time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                } else {
+                    time += ts[j];
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if (time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                    temp.serviceTime -= ts[j];
+                    result.push({temp.processName, ts[j]});
+                    if(j == 0) // 0 레벨 큐
+                    { // 프로세스가 수행되고 돌이올때까지 다른 프로세스가 큐에 다른 프로세스가 없으면 다음 레벨의 큐로 이동
+                        if(ready != 1) {
+                            q[0].pop();
+                            q[1].push(temp);
+                        } else {
+                            q[0].pop();
+                            q[0].push(temp);
+                        }
+                    }
+                    else if(j == 2) // 2 레벨 큐
+                    {
+                        q[2].pop();
+                        q[2].push(temp);
+                    } else{ // 1 레벨 큐
+                        q[1].pop();
+                        q[2].push(temp);
+                    }
+                }
+                if(newProcess) {
+                    break;
+
+                }
+            }
+        }
+    }
+}
+void RR(vector<process> p, int ts) {
+    int time = 0;
+    int killedProcess = 0;
+    int nextIdx = 1;
+    queue<process> q;
+    q.push(p[0]);
+    while(killedProcess < p.size()) { // 모든 프로세스가 완료되면 종료
+        process temp = q.front();
+        int restTime = temp.serviceTime - ts; // 해당 프로세스의 남은 수행시간
+        if(restTime <= 0) { // 프로세스의 남은 시간이 없을 때 (수행 종료)
+            time += temp.serviceTime;
+            result.push({temp.processName, q.front().serviceTime});
+            q.pop();
+            killedProcess++; // 완료된 프로세스 체크
+            for(int i = nextIdx; i < p.size(); i++) { // 현재까지 시간보다 해당 프로세스의 도착시간이 같거나 작은 경우
+                if(time >= p[i].arriveTime) {
+                    q.push(p[i]);
+                    nextIdx = i + 1;
+                }
+            }
+        } else {
+            time += ts;
+            for(int i = nextIdx; i < p.size(); i++) { // 현재까지 시간보다 해당 프로세스의 도착시간이 같거나 작은 경우
+                if(time >= p[i].arriveTime) {
+                    q.push(p[i]);
+                    nextIdx = i + 1;
+                }
+            }
+            result.push({temp.processName, ts}); // 결과를 넣을 큐에 해당 프로세스 이름과, 타임슬라이스 넣어줌
+            temp.serviceTime -= ts; // 수행시간 타임슬라이스 만큼 감소
+            q.pop();
+            q.push(temp); // 작업을 수행하고 다시 큐 안으로 들어옴
+        }
+    }
+    getPerformance(p);
+}
 int main() {
     SetInit();
     FIFO(v);
-
+    MLFQ(v, 1);
+    RR(v, 1);
 }
