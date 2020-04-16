@@ -5,6 +5,7 @@
 #include <climits>
 #include <string>
 #include <string.h>
+#include <math.h>
 using namespace std;
 
 /* define process struct */
@@ -120,9 +121,12 @@ void getPerformance(vector<process> p)
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
 } // print Performance
-void MLFQ(vector<process> p) {
+void MLFQ(vector<process> p, int exPow) {
     queue<process> q[3]; // 3개의 큐,
-    int ts[3] = {1, 2, 4};
+    int ts[3];
+    for(int i = 0; i < 3; i++) {
+        ts[i] = pow(exPow, i);
+    }
     int time = 0;
     int nextIdx = 1;
     bool newProcess = false;
@@ -194,7 +198,7 @@ void MLFQ(vector<process> p) {
 }
 int main() {
     SetInit();
-    MLFQ(v);
+    MLFQ(v, 1);
     Print();
     return 0;
 }
