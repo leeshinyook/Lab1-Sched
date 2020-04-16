@@ -24,6 +24,7 @@ struct process {
 };
 /* end of process struct */
 
+
 /* perform 5 processes */
 queue<pair<char, int>> result;
 vector<process> v(5);
@@ -49,11 +50,11 @@ void InitVariable() {
 /* End of Initvari(calculate and print) func*/
 
 void SetInit() {
-    v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
-    v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
-    v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C';
-    v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
-    v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
+    v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A', v[0].ticket = 100;
+    v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B', v[1].ticket = 50;
+    v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C', v[2].ticket = 250;
+    v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D', v[3].ticket = 400;
+    v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E', v[4].ticket = 200;
     InitVariable();
 }
 
@@ -155,6 +156,35 @@ void getPerformance(vector<process> p)
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
     Print();
 } // print Performance
+
+void Stride(vector<process> p) {
+    int TC = 100; // 반복 횟수
+    int commonMulti = 0; // 최소공배수가 들어갈 변수
+    int minIdx = 0;
+    int temp = 0;
+    for(int i = 2; i < p.size(); i++) { // 각 ticket값들의 최소공배수를 구함
+        if(i == 2)
+            temp = LCM(p[0].ticket, p[1].ticket);
+        commonMulti = LCM(p[i].ticket, temp);
+        temp = commonMulti;
+        p[i].passValue = 0;
+    }
+    for(int i = 0; i < p.size(); i++) { // stride값 설정
+        p[i].stride = commonMulti / p[i].ticket;
+    }
+    for(int i = 0; i < TC; i++) {
+        int min = INT_MAX;
+        for(int j = 0; j < p.size(); j++) {
+            if(min > p[j].passValue) { // passValue가 가장 작은 프로세스부터 실행
+                min = p[j].passValue;
+                minIdx = j;
+            }
+        }
+        result.push({p[minIdx].processName, 1});
+        p[minIdx].passValue += p[minIdx].stride; // stride만큼 passValue 증가
+    }
+    Print();
+}
 void FIFO(vector<process> p)
 {
     /*
@@ -288,4 +318,5 @@ int main() {
     FIFO(v);
     MLFQ(v, 1);
     RR(v, 1);
+    Stride(v);
 }
