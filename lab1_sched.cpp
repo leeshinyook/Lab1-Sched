@@ -67,7 +67,6 @@ int GCD(int a, int b) // Greatest common divisor
     }
     return a;
 }
-
 int LCM(int a, int b) // Least common multiple
 {
     return a * b / GCD(a, b);
@@ -123,7 +122,7 @@ void calcWait(vector<process> p)
         copy.pop();
     }
     avgWait /= p.size();
-} 
+}
 void calcTurnaround(vector<process> p)
 {
     queue<pair<char, int>> copy;
@@ -188,10 +187,9 @@ void RR(vector<process> p, int ts) {
             q.push(temp); // 작업을 수행하고 다시 큐 안으로 들어옴
         }
     }
+    getPerformance(p);
 }
 int main() {
     SetInit();
-    RR(v, 4);
-    Print();
-    return 0;
+    RR(v, 1);
 }
