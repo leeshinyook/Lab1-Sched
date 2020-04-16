@@ -35,13 +35,45 @@ vector<int> turnaround(5, 0); // 5 processes
 vector<int> pWait(5, -1); // 5 processes
 /* end of calculate and print */
 
+/* Initvari(calculate and print) func */
+void InitVariable() {
+    avgTurnaround = 0;
+    avgWait = 0;
+    while(!result.empty()) result.pop();
+    for(int i = 0; i < 5; i++) {
+        turnaround[i] = 0;
+        pWait[i] = -1;
+    }
+}
+/* End of Initvari(calculate and print) func*/
+
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
     v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
     v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C';
     v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
     v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
+    InitVariable();
 }
+
+/* Euclidean algorithm for calculate stride */
+int GCD(int a, int b) // Greatest common divisor
+{
+    int c;
+    while(b > 0)
+    {
+        c = a % b;
+        a = b;
+        b = c;
+    }
+    return a;
+}
+
+int LCM(int a, int b) // Least common multiple
+{
+    return a * b / GCD(a, b);
+}
+/* end of Euclidean algorithm for calculate stride */
 
 // scheduling table ■ □
 void Print() {
@@ -120,6 +152,7 @@ void getPerformance(vector<process> p)
         cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
+    Print();
 } // print Performance
 void MLFQ(vector<process> p, int exPow) {
     queue<process> q[3]; // 3개의 큐,
