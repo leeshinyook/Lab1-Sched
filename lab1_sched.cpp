@@ -34,7 +34,17 @@ vector<int> turnaround(5, 0); // 5 processes
 vector<int> pWait(5, -1); // 5 processes
 /* end of calculate and print */
 
-
+/* Initvari(calculate and print) func */
+void InitVariable() {
+    avgTurnaround = 0;
+    avgWait = 0;
+    while(!result.empty()) result.pop();
+    for(int i = 0; i < 5; i++) {
+        turnaround[i] = 0;
+        pWait[i] = -1;
+    }
+}
+/* End of Initvari(calculate and print) func*/
 
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
@@ -42,7 +52,108 @@ void SetInit() {
     v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C';
     v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D';
     v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
+    InitVariable();
 }
+
+/* Euclidean algorithm for calculate stride */
+int GCD(int a, int b) // Greatest common divisor
+{
+    int c;
+    while(b > 0)
+    {
+        c = a % b;
+        a = b;
+        b = c;
+    }
+    return a;
+}
+
+int LCM(int a, int b) // Least common multiple
+{
+    return a * b / GCD(a, b);
+}
+/* end of Euclidean algorithm for calculate stride */
+
+
+// scheduling table ■ □
+void Print() {
+    int time;
+    int size = result.size();
+    vector<pair<char, int>> arr(size);
+    for(int i = 0; i < size; i++) {
+        arr[i].first = result.front().first;
+        arr[i].second = result.front().second;
+        result.pop();
+    }
+    for(int i = 0; i < 5; i++) {
+        time = 0;
+        cout << v[i].processName << " ";
+        for(int j = 0; j < arr.size(); j++) {
+            if(v[i].processName == arr[j].first) {
+                for(int k = 0; k < arr[j].second; k++) {
+                    cout << "■ ";
+                }
+            } else {
+                time += arr[j].second;
+                for(int k = 0; k < time; k++) {
+                    cout << "□ ";
+                }
+                time = 0;
+            }
+        }
+        cout << '\n';
+    }
+}
+void calcWait(vector<process> p) 
+{
+    queue<pair<char, int>> copy;
+    copy = result;
+    int time = 0;
+    while(!copy.empty())
+    {
+        for(int i = 0; i < p.size(); i++)
+        {
+            if(pWait[i] == -1 && copy.front().first == p[i].processName)
+            {
+                p[i].waitTime = pWait[i] = time - p[i].arriveTime;
+                avgWait += p[i].waitTime;
+            }
+        }
+        time += copy.front().second;
+        copy.pop();
+    }
+    avgWait /= p.size();
+} 
+void calcTurnaround(vector<process> p)
+{
+    queue<pair<char, int>> copy;
+    copy = result;
+    int time = 0;
+    while(!copy.empty())
+    {
+        time += copy.front().second;
+        for(int i = 0; i < p.size(); i++)
+        {
+            if(copy.front().first == p[i].processName)
+                p[i].turnaroundTime = turnaround[i] = time - p[i].arriveTime;
+        }
+        copy.pop();
+    }
+    for(int i = 0; i < p.size(); i++)
+        avgTurnaround += p[i].turnaroundTime;
+    avgTurnaround /= p.size();
+}
+void getPerformance(vector<process> p)
+{
+    calcWait(p);
+    calcTurnaround(p);
+    for(int i = 0; i < p.size(); i++)
+    {
+        cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
+    }
+    cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
+    Print();
+} // print Performance
 void RR(vector<process> p, int ts) {
     int time = 0;
     int killedProcess = 0;
@@ -78,87 +189,6 @@ void RR(vector<process> p, int ts) {
         }
     }
 }
-// scheduling table ■ □
-void Print() {
-    char task[5] = {'A', 'B', 'C', 'D', 'E'};
-    int time = 0;
-    int size = result.size();
-    vector<pair<char, int>> arr(size);
-    for(int i = 0; i < size; i++) {
-        arr[i].first = result.front().first;
-        arr[i].second = result.front().second;
-        time += result.front().second;
-        result.pop();
-    }
-    for(int i = 0; i < 5; i++) {
-        time = 0;
-        cout << task[i] << " ";
-        for(int j = 0; j < arr.size(); j++) {
-            if(task[i] == arr[j].first) {
-                for(int k = 0; k < arr[j].second; k++) {
-                    cout << "■ ";
-                }
-            } else {
-                time += arr[j].second;
-                for(int k = 0; k < time; k++) {
-                    cout << "□ ";
-                }
-                time = 0;
-            }
-        }
-        cout << '\n';
-    }
-}
-void calcWait(vector<process> p, int ts) 
-{
-    queue<pair<char, int>> copy;
-    copy = result;
-    int time = 0;
-    while(!copy.empty())
-    {
-        for(int i = 0; i < p.size(); i++)
-        {
-            if(pWait[i] == -1 && copy.front().first == p[i].processName)
-            {
-                p[i].waitTime = pWait[i] = time - p[i].arriveTime;
-                avgWait += p[i].waitTime;
-            }
-        }
-        time += copy.front().second;
-        copy.pop();
-    }
-    avgWait /= p.size();
-} 
-void calcTurnaround(vector<process> p, int ts)
-{
-    queue<pair<char, int>> copy;
-    copy = result;
-    int time = 0;
-    while(!copy.empty())
-    {
-        time += copy.front().second;
-        for(int i = 0; i < p.size(); i++)
-        {
-            if(copy.front().first == p[i].processName)
-            {
-                p[i].turnaroundTime = turnaround[i] = time;
-                avgTurnaround += p[i].turnaroundTime;
-            }
-        }
-        copy.pop();
-    }
-    avgTurnaround /= p.size();
-}
-void getPerformance(vector<process> p)
-{
-    calcWait(p, 4);
-    calcTurnaround(p, 4);
-    for(int i = 0; i < p.size(); i++)
-    {
-        cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
-    }
-    cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
-} // print Performance
 int main() {
     SetInit();
     RR(v, 4);
