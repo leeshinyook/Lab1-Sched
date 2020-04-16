@@ -73,6 +73,7 @@ int LCM(int a, int b) // Least common multiple
 }
 /* end of Euclidean algorithm for calculate stride */
 
+
 // scheduling table ■ □
 void Print() {
     int time;
@@ -191,5 +192,4 @@ void RR(vector<process> p, int ts) {
 int main() {
     SetInit();
     RR(v, 1);
-    return 0;
 }
