@@ -34,6 +34,18 @@ vector<int> turnaround(5, 0); // 5 processes
 vector<int> pWait(5, -1); // 5 processes
 /* end of calculate and print */
 
+/* Initvari(calculate and print) func */
+void InitVariable() {
+    avgTurnaround = 0;
+    avgWait = 0;
+    while(!result.empty()) result.pop();
+    for(int i = 0; i < 5; i++) {
+        turnaround[i] = 0;
+        pWait[i] = -1;
+    }
+}
+/* End of Initvari(calculate and print) func*/
+
 void SetInit() {
     v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A';
     v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B';
