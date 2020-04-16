@@ -130,121 +130,64 @@ void MLFQ(vector<process> p) {
     int ready = 1;
     q[0].push(p[0]);
     while (killedProcess < p.size()) {
-        while(!q[0].empty()) {
-            newProcess = false;
-            process temp = q[0].front();
-            int restTime = temp.serviceTime - ts[0];
-            if(restTime <= 0) { // 남은 시간이 없을 때,
-                time += temp.serviceTime;
-                result.push({temp.processName, q[0].front().serviceTime});
-                q[0].pop();
-                killedProcess++;
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if(time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        newProcess = true;
-                        ready++;
-                    }
-                }
-            } else {
-                time += ts[0];
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if (time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        ready++;
-                        newProcess = true;
-                    }
-                }
-                temp.serviceTime -= ts[0];
-                result.push({temp.processName, ts[0]});
-                if(ready != 1) {
-                    q[0].pop();
-                    q[1].push(temp);
-                } else {
-                    q[0].pop();
-                    q[0].push(temp);
-                }
-            }
-            if(newProcess) {
-                break;
-            }
-        }
-        while (!q[1].empty()) {
-            if(newProcess) {
-                break;
-            }
-            newProcess = false;
-            process temp = q[1].front();
-            int restTime = temp.serviceTime - ts[1];
-            if(restTime <= 0) { // 남은 시간이 없을 때,
-                time += temp.serviceTime;
-                result.push({temp.processName, q[1].front().serviceTime});
-                q[1].pop();
-
-                killedProcess++;
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if(time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        newProcess = true;
-                    }
-                }
-            } else {
-                time += ts[1];
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if(time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        newProcess = true;
-                    }
-                }
-                temp.serviceTime -= ts[1];
-                result.push({temp.processName, ts[1]});
-                q[1].pop();
-                q[2].push(temp);
-            }
-            if(newProcess) {
-                break;
-            }
-        }
-        while (!q[2].empty()) {
-            if(newProcess) {
-                break;
-            }
-            newProcess = false;
-            process temp = q[2].front();
-            int restTime = temp.serviceTime - ts[2];
-            if(restTime <= 0) { // 남은 시간이 없을 때,
-                time += temp.serviceTime;
-                result.push({temp.processName, q[2].front().serviceTime});
-                q[2].pop();
-                killedProcess++;
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if(time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        newProcess = true;
-                    }
-                }
-            } else {
-                time += ts[2];
-                for(int i = nextIdx; i < p.size(); i++) {
-                    if(time >= p[i].arriveTime) {
-                        q[0].push(p[i]);
-                        nextIdx = i + 1;
-                        newProcess = true;
-                    }
-                }
-                temp.serviceTime -= ts[2];
-                result.push({temp.processName, ts[2]});
-                q[2].pop();
-                q[2].push(temp);
-            }
-            if(newProcess) {
+        for(int j = 0; j < 3; j++)
+        {
+            while(!q[j].empty())
+            {
+                if((j == 1 || j == 2) && newProcess) // 새로운 프로세스가 들어왔으면 1 ,2 레벨 큐로 안내려감
+                    break;
                 newProcess = false;
-                break;
+                process temp = q[j].front();
+                int restTime = temp.serviceTime - ts[j];
+                if(restTime <= 0) { // 남은 시간이 없을 때,
+                    time += temp.serviceTime;
+                    result.push({temp.processName, q[j].front().serviceTime});
+                    q[j].pop();
+                    killedProcess++;
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if(time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                } else {
+                    time += ts[j];
+                    for(int i = nextIdx; i < p.size(); i++) {
+                        if (time >= p[i].arriveTime) {
+                            q[0].push(p[i]);
+                            nextIdx = i + 1;
+                            newProcess = true;
+                            if(j == 0)
+                                ready++;
+                        }
+                    }
+                    temp.serviceTime -= ts[j];
+                    result.push({temp.processName, ts[j]});
+                    if(j == 0) // 0 레벨
+                    { // 프로세스가 수행되고 돌이올때까지 다른 프로세스가 큐에 다른 프로세스가 없으면 다음 레벨의 큐로 이동
+                        if(ready != 1) {
+                            q[0].pop();
+                            q[1].push(temp);
+                        } else {
+                            q[0].pop();
+                            q[0].push(temp);
+                        }
+                    }
+                    else if(j == 2) // 2 레벨
+                    {
+                        q[2].pop();
+                        q[2].push(temp);
+                    } else{ // 1 레벨
+                        q[1].pop();
+                        q[2].push(temp);
+                    }
+                }
+                if(newProcess) {
+                    break;
+                }
             }
         }
     }
