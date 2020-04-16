@@ -42,6 +42,25 @@ void SetInit() {
     v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E';
 }
 
+/* Euclidean algorithm for calculate stride */
+int GCD(int a, int b) // Greatest common divisor
+{
+    int c;
+    while(b > 0)
+    {
+        c = a % b;
+        a = b;
+        b = c;
+    }
+    return a;
+}
+
+int LCM(int a, int b) // Least common multiple
+{
+    return a * b / GCD(a, b);
+}
+/* end of Euclidean algorithm for calculate stride */
+
 // scheduling table ■ □
 void Print() {
     int time;
