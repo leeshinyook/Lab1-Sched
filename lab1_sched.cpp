@@ -168,10 +168,10 @@ void FIFO(vector<process> p)
     */
     for(int i = 0; i < 5; i++)
         result.push({p[i].processName, p[i].serviceTime});
+    getPerformance(p);
 }
 int main() {
     SetInit();
     FIFO(v);
-    getPerformance(v);
-    Print();
+
 }
