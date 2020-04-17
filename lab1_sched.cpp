@@ -4,29 +4,9 @@
 #include <queue>
 #include <climits>
 #include <math.h>
+#include "lab1_sched_types.h"
 using namespace std;
 
-/* define process struct */
-struct process {
-    char processName; // 프로세스 이름, priority
-    int serviceTime; // 동작시간
-    int arriveTime; // 도착시간
-    int waitTime; // 대기시간
-    int turnaroundTime; // 반환시간
-    /*for stride----*/
-    int stride;
-    int ticket;
-    int passValue = 0; // initialize
-    /*--------------*/
-};
-/* end of process struct */
-
-
-/* perform 5 processes */
-queue<pair<char, int>> result;
-vector<process> v1(5);
-vector<process> v2(5);
-/* end of 5 processes */
 
 /* for calculate and print performance */
 float avgTurnaround = 0;
@@ -342,22 +322,4 @@ void RR(vector<process> p, int ts) {
     getPerformance(p);
     SetInit1();
     SetInit2();
-}
-int main() {
-    cout<<"First workloads\n\n";
-    SetInit1();
-    FIFO(v1);
-    RR(v1, 1);
-    RR(v1, 4);
-    MLFQ(v1, 1);
-    MLFQ(v1, 2);
-    Stride(v1);
-    cout<<"Second workloads\n\n";
-    SetInit2();
-    FIFO(v2);
-    RR(v2, 1);
-    RR(v2, 4);
-    MLFQ(v2, 1);
-    MLFQ(v2, 2);
-    Stride(v2);
 }
