@@ -345,6 +345,7 @@ void RR(vector<process> p, int ts) {
     SetInit2();
 }
 int main() {
+    cout<<"First workloads\n\n";
     SetInit1();
     FIFO(v1);
     RR(v1, 1);
@@ -352,6 +353,7 @@ int main() {
     MLFQ(v1, 1);
     MLFQ(v1, 2);
     Stride(v1);
+    cout<<"Second workloads\n\n";
     SetInit2();
     FIFO(v2);
     RR(v2, 1);
