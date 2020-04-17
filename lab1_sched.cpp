@@ -222,7 +222,8 @@ void FIFO(vector<process> p)
     for(int i = 0; i < 5; i++)
         result.push({p[i].processName, p[i].serviceTime});
     getPerformance(p);
-    SetInit();
+    SetInit1();
+    SetInit2();
 }
 void MLFQ(vector<process> p, int exPow) {
     cout << "TITLE : \tMulti Level Feedback Queue cpu scheduling" << "\tq - " << exPow << "^i" << '\n';
@@ -301,7 +302,8 @@ void MLFQ(vector<process> p, int exPow) {
         }
     }
     getPerformance(p);
-    SetInit();
+    SetInit1();
+    SetInit2();
 }
 void RR(vector<process> p, int ts) {
     cout << "TITLE : \tRound-Robin cpu scheduling" << "\tq - " << ts << '\n';
@@ -339,14 +341,22 @@ void RR(vector<process> p, int ts) {
         }
     }
     getPerformance(p);
-    SetInit();
+    SetInit1();
+    SetInit2();
 }
 int main() {
-    SetInit();
-    FIFO(v);
-    RR(v, 1);
-    RR(v, 4);
-    MLFQ(v, 1);
-    MLFQ(v, 2);
-    Stride(v);
+    SetInit1();
+    FIFO(v1);
+    RR(v1, 1);
+    RR(v1, 4);
+    MLFQ(v1, 1);
+    MLFQ(v1, 2);
+    Stride(v1);
+    SetInit2();
+    FIFO(v2);
+    RR(v2, 1);
+    RR(v2, 4);
+    MLFQ(v2, 1);
+    MLFQ(v2, 2);
+    Stride(v2);
 }
