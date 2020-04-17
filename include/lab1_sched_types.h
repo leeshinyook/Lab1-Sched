@@ -15,11 +15,11 @@ struct process {
     /*for stride----*/
     int stride;
     int ticket;
-    int passValue = 0; // initialize
+    int passValue; // initialize
     /*--------------*/
 };
 /* perform 5 processes */
-queue<pair<char, int>> result;
+queue<pair<char, int> > result;
 vector<process> v1(5);
 vector<process> v2(5);
 /* end of 5 processes */

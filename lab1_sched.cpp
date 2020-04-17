@@ -69,7 +69,7 @@ int LCM(int a, int b) // Least common multiple
 void Print(vector<process> p) {
     int time;
     int size = result.size();
-    vector<pair<char, int>> arr(size);
+    vector<pair<char, int> > arr(size);
     for(int i = 0; i < size; i++) {
         arr[i].first = result.front().first;
         arr[i].second = result.front().second;
@@ -96,7 +96,7 @@ void Print(vector<process> p) {
 }
 void calcWait(vector<process> p)
 {
-    queue<pair<char, int>> copy;
+    queue<pair<char, int> > copy;
     copy = result;
     int time = 0;
     while(!copy.empty())
@@ -116,7 +116,7 @@ void calcWait(vector<process> p)
 }
 void calcTurnaround(vector<process> p)
 {
-    queue<pair<char, int>> copy;
+    queue<pair<char, int> > copy;
     copy = result;
     int time = 0;
     while(!copy.empty())
@@ -180,7 +180,7 @@ void Stride(vector<process> p) {
                 minIdx = j;
             }
         }
-        result.push({p[minIdx].processName, 1});
+        result.push(make_pair(p[minIdx].processName, 1));
         p[minIdx].passValue += p[minIdx].stride; // stride만큼 passValue 증가
     }
     Print(p);
@@ -199,7 +199,7 @@ void FIFO(vector<process> p)
         sort(&arr[0], &arr[arr.size()]);
     */
     for(int i = 0; i < 5; i++)
-        result.push({p[i].processName, p[i].serviceTime});
+        result.push(make_pair(p[i].processName, p[i].serviceTime));
     getPerformance(p);
     SetInit1();
     SetInit2();
@@ -229,7 +229,7 @@ void MLFQ(vector<process> p, int exPow) {
                 int restTime = temp.serviceTime - ts[j];
                 if(restTime <= 0) { // 남은 시간이 없을 때,
                     time += temp.serviceTime;
-                    result.push({temp.processName, q[j].front().serviceTime});
+                    result.push(make_pair(temp.processName, q[j].front().serviceTime));
                     q[j].pop();
                     killedProcess++;
                     for(int i = nextIdx; i < p.size(); i++) {
@@ -253,7 +253,7 @@ void MLFQ(vector<process> p, int exPow) {
                         }
                     }
                     temp.serviceTime -= ts[j];
-                    result.push({temp.processName, ts[j]});
+                    result.push(make_pair(temp.processName, ts[j]));
                     if(j == 0) // 0 레벨 큐
                     { // 프로세스가 수행되고 돌이올때까지 다른 프로세스가 큐에 다른 프로세스가 없으면 다음 레벨의 큐로 이동
                         if(ready != 1) {
@@ -296,7 +296,7 @@ void RR(vector<process> p, int ts) {
         int restTime = temp.serviceTime - ts; // 해당 프로세스의 남은 수행시간
         if(restTime <= 0) { // 프로세스의 남은 시간이 없을 때 (수행 종료)
             time += temp.serviceTime;
-            result.push({temp.processName, q.front().serviceTime});
+            result.push(make_pair(temp.processName, q.front().serviceTime));
             q.pop();
             killedProcess++; // 완료된 프로세스 체크
             for(int i = nextIdx; i < p.size(); i++) { // 현재까지 시간보다 해당 프로세스의 도착시간이 같거나 작은 경우
@@ -313,7 +313,7 @@ void RR(vector<process> p, int ts) {
                     nextIdx = i + 1;
                 }
             }
-            result.push({temp.processName, ts}); // 결과를 넣을 큐에 해당 프로세스 이름과, 타임슬라이스 넣어줌
+            result.push(make_pair(temp.processName, ts)); // 결과를 넣을 큐에 해당 프로세스 이름과, 타임슬라이스 넣어줌
             temp.serviceTime -= ts; // 수행시간 타임슬라이스 만큼 감소
             q.pop();
             q.push(temp); // 작업을 수행하고 다시 큐 안으로 들어옴
