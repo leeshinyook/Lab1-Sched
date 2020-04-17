@@ -177,6 +177,16 @@ void Stride(vector<process> p) {
     for(int i = 0; i < TC; i++) {
         int min = INT_MAX;
         for(int j = 0; j < p.size(); j++) {
+            /*
+                if don't set sequence of processName, then always need to sort by processName ( processName, passValue )
+                
+                vector<pair<char, int>> arr;
+                for(int i = 0; i < p.size(); i++) {
+                    arr[i].first = p[i].processName;
+                    arr[i].second = p[i].passValue;
+                }
+                 sort(&arr[0], &arr[arr.size()]);
+            */
             if(min > p[j].passValue) { // passValue가 가장 작은 프로세스부터 실행
                 min = p[j].passValue;
                 minIdx = j;
