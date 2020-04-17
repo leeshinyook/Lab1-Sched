@@ -4,7 +4,12 @@
 
 #ifndef LAB1_LAB1_SCHED_TYPES_H
 #define LAB1_LAB1_SCHED_TYPES_H
+#include <iostream>
 #include <vector>
+#include <algorithm>
+#include <queue>
+#include <climits>
+#include <math.h>
 using namespace std;
 struct process {
     char processName; // 프로세스 이름, priority
@@ -18,11 +23,8 @@ struct process {
     int passValue; // initialize
     /*--------------*/
 };
-/* perform 5 processes */
-queue<pair<char, int> > result;
-vector<process> v1(5);
-vector<process> v2(5);
-/* end of 5 processes */
+
+
 void InitVariable();
 void SetInit1();
 void SetInit2();
@@ -36,6 +38,6 @@ void Stride(vector<process> p);
 void FIFO(vector<process> p);
 void MLFQ(vector<process> p, int exPow);
 void RR(vector<process> p, int ts);
-
+void Run();
 
 #endif //LAB1_LAB1_SCHED_TYPES_H
