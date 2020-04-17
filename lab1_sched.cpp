@@ -163,7 +163,7 @@ void getPerformance(vector<process> p)
         cout<<"process : "<<p[i].processName<<"\tturnaroundTime : "<<turnaround[i]<<"\twaitTime : "<<pWait[i]<<"\n";
     }
     cout<<"Average turnaroundTime : "<<avgTurnaround<<" Average waitTime : "<<avgWait<<"\n";
-    Print();
+    Print(p);
     cout << "--------------------------------------------------------------------------" << '\n';
 } // print Performance
 
@@ -204,7 +204,7 @@ void Stride(vector<process> p) {
         result.push({p[minIdx].processName, 1});
         p[minIdx].passValue += p[minIdx].stride; // stride만큼 passValue 증가
     }
-    Print();
+    Print(p);
 }
 void FIFO(vector<process> p)
 {
