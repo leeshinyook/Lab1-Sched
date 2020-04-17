@@ -11,7 +11,7 @@ using namespace std;
 
 /* define process struct */
 struct process {
-    char processName; // 프로세스 번호, priority
+    char processName; // 프로세스 이름, priority
     int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
@@ -38,7 +38,7 @@ vector<int> turnaround(5, 0); // 5 processes
 vector<int> pWait(5, -1); // 5 processes
 /* end of calculate and print */
 
-/* Initvari(calculate and print) func */
+/* Initvariable(calculate and print) func */
 void InitVariable() {
     avgTurnaround = 0;
     avgWait = 0;
@@ -48,8 +48,9 @@ void InitVariable() {
         pWait[i] = -1;
     }
 }
-/* End of Initvari(calculate and print) func*/
+/* End of Initvariable(calculate and print) func*/
 
+/* Set initialize two workloads */
 void SetInit1() {
     v1[0].arriveTime = 0, v1[0].serviceTime = 3, v1[0].processName = 'A', v1[0].ticket = 100;
     v1[1].arriveTime = 2, v1[1].serviceTime = 6, v1[1].processName = 'B', v1[1].ticket = 50;
@@ -66,6 +67,7 @@ void SetInit2() {
     v2[4].arriveTime = 10, v2[4].serviceTime = 3, v2[4].processName = 'E', v2[4].ticket = 500;
     InitVariable();
 }
+/* End of set initialize two workloads */
 
 /* Euclidean algorithm for calculate stride */
 int GCD(int a, int b) // Greatest common divisor
