@@ -78,12 +78,12 @@ void Print(vector<process> p) {
         for(int j = 0; j < arr.size(); j++) {
             if(p[i].processName == arr[j].first) {
                 for(int k = 0; k < arr[j].second; k++) {
-                    cout << "■";
+                    cout << "■ ";
                 }
             } else {
                 time += arr[j].second;
                 for(int k = 0; k < time; k++) {
-                    cout << "□";
+                    cout << "□ ";
                 }
                 time = 0;
             }
