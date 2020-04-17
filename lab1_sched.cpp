@@ -27,7 +27,8 @@ struct process {
 
 /* perform 5 processes */
 queue<pair<char, int>> result;
-vector<process> v(5);
+vector<process> v1(5);
+vector<process> v2(5);
 /* end of 5 processes */
 
 /* for calculate and print performance */
@@ -49,12 +50,20 @@ void InitVariable() {
 }
 /* End of Initvari(calculate and print) func*/
 
-void SetInit() {
-    v[0].arriveTime = 0, v[0].serviceTime = 3, v[0].processName = 'A', v[0].ticket = 100;
-    v[1].arriveTime = 2, v[1].serviceTime = 6, v[1].processName = 'B', v[1].ticket = 50;
-    v[2].arriveTime = 4, v[2].serviceTime = 4, v[2].processName = 'C', v[2].ticket = 250;
-    v[3].arriveTime = 6, v[3].serviceTime = 5, v[3].processName = 'D', v[3].ticket = 400;
-    v[4].arriveTime = 8, v[4].serviceTime = 2, v[4].processName = 'E', v[4].ticket = 200;
+void SetInit1() {
+    v1[0].arriveTime = 0, v1[0].serviceTime = 3, v1[0].processName = 'A', v1[0].ticket = 100;
+    v1[1].arriveTime = 2, v1[1].serviceTime = 6, v1[1].processName = 'B', v1[1].ticket = 50;
+    v1[2].arriveTime = 4, v1[2].serviceTime = 4, v1[2].processName = 'C', v1[2].ticket = 250;
+    v1[3].arriveTime = 6, v1[3].serviceTime = 5, v1[3].processName = 'D', v1[3].ticket = 400;
+    v1[4].arriveTime = 8, v1[4].serviceTime = 2, v1[4].processName = 'E', v1[4].ticket = 200;
+    InitVariable();
+}
+void SetInit2() { 
+    v2[0].arriveTime = 0, v2[0].serviceTime = 4, v2[0].processName = 'A', v2[0].ticket = 200;
+    v2[1].arriveTime = 1, v2[1].serviceTime = 2, v2[1].processName = 'B', v2[1].ticket = 100;
+    v2[2].arriveTime = 5, v2[2].serviceTime = 6, v2[2].processName = 'C', v2[2].ticket = 250;
+    v2[3].arriveTime = 7, v2[3].serviceTime = 5, v2[3].processName = 'D', v2[3].ticket = 1000;
+    v2[4].arriveTime = 10, v2[4].serviceTime = 3, v2[4].processName = 'E', v2[4].ticket = 500;
     InitVariable();
 }
 
