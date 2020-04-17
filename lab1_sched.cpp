@@ -3,9 +3,6 @@
 #include <algorithm>
 #include <queue>
 #include <climits>
-#include <string>
-#include <string.h>
-#include <stdio.h>
 #include <math.h>
 using namespace std;
 
