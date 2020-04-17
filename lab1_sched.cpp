@@ -87,7 +87,7 @@ int LCM(int a, int b) // Least common multiple
 
 
 // scheduling table ■ □
-void Print() {
+void Print(vector<process> p) {
     int time;
     int size = result.size();
     vector<pair<char, int>> arr(size);
@@ -98,9 +98,9 @@ void Print() {
     }
     for(int i = 0; i < 5; i++) {
         time = 0;
-        cout << v[i].processName << " ";
+        cout << p[i].processName << " ";
         for(int j = 0; j < arr.size(); j++) {
-            if(v[i].processName == arr[j].first) {
+            if(p[i].processName == arr[j].first) {
                 for(int k = 0; k < arr[j].second; k++) {
                     cout << "■";
                 }
