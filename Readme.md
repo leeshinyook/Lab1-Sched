@@ -4,8 +4,8 @@
 
 ## Team
 
-| [leeshinyook](https://github.com/leeshinyook)                | [hs-krispy](https://github.com/hs-krispy)                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+|        [leeshinyook](https://github.com/leeshinyook)         |          [hs-krispy](https://github.com/hs-krispy)           |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
 | <img src="https://avatars3.githubusercontent.com/u/55838461?s=400&u=06a56002fd08e659a979557ea8d8a79efe9ba1ec&v=4" width="50%" align="center"> | <img align="center" src="https://avatars0.githubusercontent.com/u/58063806?s=400&v=4" width="50%"> |
 
 We are students of Dankook University's software department. We are working on a project for the Cpu 
