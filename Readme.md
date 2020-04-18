@@ -1,6 +1,8 @@
 # CPU Scheduling Algorithms
 
-<img src="https://img.shields.io/github/issues/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/forks/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/stars/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/last-commit/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/repo-size/leeshinyook/Lab1-Sched">
+<img src="https://img.shields.io/github/issues/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/forks/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/stars/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/last-commit/leeshinyook/Lab1-Sched"> <img src="https://img.shields.io/github/repo-size/leeshinyook/Lab1-Sched"> [![HitCount](http://hits.dwyl.com/leeshinyook/Lab1-Sched.svg)](http://hits.dwyl.com/leeshinyook/Lab1-Sched)
+
+
 
 ## Team
 
